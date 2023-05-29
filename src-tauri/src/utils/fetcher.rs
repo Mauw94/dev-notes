@@ -64,4 +64,6 @@ mod tests {
     // fn fetch_note_content_returns_ok() {
     //     let note = fetch_note_content(path);
     // }
+
+    // TODO: create test note when creating directories to use in unit test
 }
