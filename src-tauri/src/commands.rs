@@ -1,6 +1,9 @@
 use crate::{
     config::Config,
-    utils::writer::{FileWriter, Writer},
+    utils::{
+        fetcher::{self, Note},
+        writer::{FileWriter, Writer},
+    },
 };
 
 #[tauri::command]
@@ -14,10 +17,15 @@ pub async fn write_to_file(text: String, file_name: String) {
     let file_writer = FileWriter::new(config.files_folder);
     match file_writer.write(text, file_name) {
         Ok(_) => {
-            println!("{}", "Successfully written away to file.");
+            println!("{}", "Successfully written to file.");
         }
         Err(err) => {
             eprintln!("{:?}", err);
         }
     }
+}
+
+#[tauri::command]
+pub async fn fetch_all_notes() -> Vec<Note> {
+    fetcher::fetch_all_notes().unwrap()
 }
