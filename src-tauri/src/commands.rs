@@ -29,3 +29,8 @@ pub async fn write_to_file(text: String, file_name: String) {
 pub async fn fetch_all_notes() -> Vec<Note> {
     fetcher::fetch_all_notes().unwrap()
 }
+
+#[tauri::command]
+pub async fn fetch_note_content(path: String) -> String {
+    fetcher::fetch_note_content(path).unwrap()
+}

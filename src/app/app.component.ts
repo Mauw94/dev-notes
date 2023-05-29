@@ -21,6 +21,10 @@ export class AppComponent implements OnInit {
       console.log(notes[0].path)
       console.log(notes[1].fileName)
     })
+
+    invoke<string>("fetch_note_content", { path: "C:\\Users\\mauri\\dev-notes\\notes\\test1.txt" }).then((content) => {
+      console.log(content)
+    })
   }
 
   greet(event: SubmitEvent, name: string): void {
