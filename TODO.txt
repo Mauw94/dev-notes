@@ -1,0 +1,5 @@
++ write info to a file
++ create cache based of off file
++ create cache
++ initialize cache on startup
++ 
