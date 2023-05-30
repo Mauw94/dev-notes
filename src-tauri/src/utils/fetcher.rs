@@ -60,10 +60,15 @@ mod tests {
         assert!(notes.is_ok());
     }
 
-    // #[test]
-    // fn fetch_note_content_returns_ok() {
-    //     let note = fetch_note_content(path);
-    // }
+    #[test]
+    fn fetch_note_content_returns_ok() {
+        let note = fetch_note_content(Config::test_file_path());
+        assert!(note.is_ok());
+    }
 
-    // TODO: create test note when creating directories to use in unit test
+    #[test]
+    fn fetch_note_content_bad_path_returns_err() {
+        let note = fetch_note_content(String::from("this path does not exist"));
+        assert!(note.is_err());
+    }
 }

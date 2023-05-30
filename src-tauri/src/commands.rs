@@ -34,3 +34,15 @@ pub async fn fetch_all_notes() -> Vec<Note> {
 pub async fn fetch_note_content(path: String) -> String {
     fetcher::fetch_note_content(path).unwrap()
 }
+
+#[tauri::command]
+pub async fn fetch_app_dir() -> String {
+    let config = Config::default();
+    config.app_folder
+}
+
+#[tauri::command]
+pub async fn fetch_files_dir() -> String {
+    let config = Config::default();
+    config.files_folder
+}

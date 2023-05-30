@@ -9,6 +9,7 @@ import Note from "src/models/Note";
 })
 export class AppComponent implements OnInit {
   greetingMessage = "";
+  filesDir = ""
 
   ngOnInit(): void {
     invoke<string>("write_to_file", { text: "this is a test", fileName: "test2.txt" }).then(() => {
@@ -22,8 +23,13 @@ export class AppComponent implements OnInit {
       console.log(notes[1].fileName)
     })
 
-    invoke<string>("fetch_note_content", { path: "C:\\Users\\mauri\\dev-notes\\notes\\test1.txt" }).then((content) => {
-      console.log(content)
+    invoke<string>("fetch_files_dir", {}).then((filesDir: string) => {
+      console.log(filesDir)
+      this.filesDir = filesDir
+    }).then(() => {
+      invoke<string>("fetch_note_content", { path: this.filesDir + "test_file.txt" }).then((content) => {
+        console.log(content)
+      })
     })
   }
 

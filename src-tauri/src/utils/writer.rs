@@ -9,7 +9,7 @@ pub trait Writer {
     fn write(&self, text: String, file_name: String) -> Result<(), Error>;
 }
 
-pub struct FileWriter {
+pub(crate) struct FileWriter {
     dest_folder: String,
 }
 
