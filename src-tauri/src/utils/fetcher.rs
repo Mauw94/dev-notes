@@ -42,7 +42,10 @@ pub fn fetch_all_notes() -> Result<Vec<Note>, Error> {
         notes.push(note);
     }
 
-    Ok(notes)
+    Ok(notes
+        .into_iter()
+        .filter(|f| f.file_name != cfg.test_file_name)
+        .collect())
 }
 
 pub fn fetch_note_content(path: String) -> Result<String, Error> {

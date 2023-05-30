@@ -19,8 +19,6 @@ export class AppComponent implements OnInit {
     invoke<string>("fetch_all_notes", {}).then((res: any) => {
       let notes = this.mapToType(res)
       console.log(notes)
-      console.log(notes[0].path)
-      console.log(notes[1].fileName)
     })
 
     invoke<string>("fetch_files_dir", {}).then((filesDir: string) => {

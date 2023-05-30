@@ -8,6 +8,7 @@ pub const NOTES_FOLDER: &str = "notes";
 pub struct Config {
     pub app_folder: String,
     pub files_folder: String,
+    pub test_file_name: String,
     pub test_file_path: String,
 }
 
@@ -16,6 +17,7 @@ impl Config {
         Self {
             app_folder: Self::app_dir().unwrap(),
             files_folder: Self::files_dir(),
+            test_file_name: String::from("test_file.txt"),
             test_file_path: Self::test_file_path(),
         }
     }
