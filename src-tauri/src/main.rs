@@ -5,6 +5,7 @@
 
 use app::App;
 use config::Config;
+use utils::{cacher::{Cache, Caching}, fetcher::Note};
 
 mod app;
 mod commands;
@@ -15,6 +16,17 @@ mod utils;
 async fn main() {
     // TODO build cache from files dir on load
     // TODO intialize cache and read from saved files
+    let note = Note {
+        file_name: String::from("test1.txt"),
+        path: String::from("asdasd"),
+        text: String::from("asd"),
+    };
+    let mut notes: Vec<Note> = vec![];
+    notes.push(note);
+
+    let mut cache = Cache::new();
+    cache.initialize();
+    cache.cache(notes);
 
     let app = App::new(Config::default());
     app.setup().unwrap();

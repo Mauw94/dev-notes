@@ -7,6 +7,7 @@ use crate::{
 
 pub struct App {
     config: Config,
+    // TODO: this can contain the caching
 }
 
 impl App {
