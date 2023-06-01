@@ -12,9 +12,9 @@ export class AppComponent implements OnInit {
   filesDir = ""
 
   ngOnInit(): void {
-    invoke<string>("write_to_file", { text: "this is a test", fileName: "test2.txt" }).then(() => {
-      console.log("done")
-    })
+    // invoke<string>("write_to_file", { text: "this is a test", fileName: "test2.txt" }).then(() => {
+    //   console.log("done")
+    // })
 
     invoke<string>("fetch_all_notes", {}).then((res: any) => {
       let notes = this.mapToType(res)

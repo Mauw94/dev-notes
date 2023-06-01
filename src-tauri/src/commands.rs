@@ -2,7 +2,7 @@ use crate::{
     config::Config,
     utils::{
         fetcher::{self, Note},
-        writer::{FileWriter, Writer},
+        writer::FileWriter,
     },
 };
 
@@ -14,8 +14,8 @@ pub async fn greet(name: String) -> String {
 #[tauri::command]
 pub async fn write_to_file(text: String, file_name: String) {
     let config = Config::default();
-    let file_writer = FileWriter::new(config.files_folder);
-    match file_writer.write(text, file_name) {
+    let file_writer = FileWriter::new();
+    match file_writer.write(file_name, config.files_folder, text) {
         Ok(_) => {
             println!("{}", "Successfully written to file.");
         }

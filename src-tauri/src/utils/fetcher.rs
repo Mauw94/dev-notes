@@ -7,6 +7,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::Config;
 
+use super::cacher::get_cache;
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Note {
     pub file_name: String,
@@ -15,32 +17,20 @@ pub struct Note {
 }
 
 impl Note {
-    pub fn new(file_name: String, path: String) -> Self {
+    pub fn new(file_name: String, path: String, text: String) -> Self {
         Self {
             file_name,
             path,
-            text: String::new(),
+            text,
         }
     }
 }
 
 pub fn fetch_all_notes() -> Result<Vec<Note>, Error> {
-    let mut notes: Vec<Note> = Vec::new();
     let cfg = Config::default();
-    let paths = fs::read_dir(cfg.files_folder)?;
-
-    for path in paths {
-        let file_name = path
-            .as_ref()
-            .unwrap()
-            .file_name()
-            .to_os_string()
-            .into_string()
-            .unwrap();
-        let file_path = path.as_ref().unwrap().path().display().to_string();
-        let note = Note::new(file_name, file_path.to_string());
-        notes.push(note);
-    }
+    let binding = get_cache();
+    let cache = binding.lock().unwrap();
+    let notes = cache.get_all().clone();
 
     Ok(notes
         .into_iter()

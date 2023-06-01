@@ -4,22 +4,16 @@ use std::{
     path::Path,
 };
 
-pub trait Writer {
-    fn new(dest_folder: String) -> Self;
-    fn write(&self, text: String, file_name: String) -> Result<(), Error>;
-}
+use super::cacher::get_cache;
+pub(crate) struct FileWriter {}
 
-pub(crate) struct FileWriter {
-    dest_folder: String,
-}
-
-impl Writer for FileWriter {
-    fn new(dest_folder: String) -> Self {
-        Self { dest_folder }
+impl FileWriter {
+    pub fn new() -> Self {
+        Self {}
     }
 
-    fn write(&self, text: String, file_name: String) -> Result<(), Error> {
-        let mut file_path = self.dest_folder.to_owned();
+    pub fn write(&self, file_name: String, folder: String, text: String) -> Result<(), Error> {
+        let mut file_path = folder.to_owned();
         let file_n = file_name.to_owned();
         file_path.push_str(&file_n);
         let mut f: File;
@@ -31,7 +25,9 @@ impl Writer for FileWriter {
                 .append(true)
                 .open(file_path)
                 .unwrap();
+
             f.write(text.as_bytes())?;
+            self.update_cache(file_name, folder, text);
         } else {
             f = OpenOptions::new()
                 .create_new(true)
@@ -39,8 +35,23 @@ impl Writer for FileWriter {
                 .append(true)
                 .open(file_path)
                 .unwrap();
+
             f.write(text.as_bytes())?;
+            self.add_to_cache(file_name, folder, text);
         }
+
         Ok(())
+    }
+
+    fn add_to_cache(&self, file_name: String, path: String, text: String) {
+        let cache = get_cache();
+        let mut cache_lock = cache.lock().unwrap();
+        cache_lock.new_note(file_name.to_string(), path.to_string(), text.to_string());
+    }
+
+    fn update_cache(&self, file_name: String, path: String, text: String) {
+        let cache = get_cache();
+        let mut cache_lock = cache.lock().unwrap();
+        cache_lock.update_cache(file_name, path, text);
     }
 }
