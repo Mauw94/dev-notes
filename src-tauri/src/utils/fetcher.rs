@@ -43,6 +43,16 @@ pub fn fetch_note_content(path: String) -> Result<String, Error> {
     Ok(content)
 }
 
+pub fn fetch_note(file_name: String) -> Result<Note, ()> {
+    let cache = get_cache();
+    let cache_lock = cache.lock().unwrap();
+    let note = cache_lock.get_note(file_name);
+    match note {
+        Some(n) => Ok(n),
+        None => Err(()),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -23,8 +23,7 @@ impl FileWriter {
                 .create_new(false)
                 .write(true)
                 .append(true)
-                .open(file_path)
-                .unwrap();
+                .open(file_path)?;
 
             f.write(text.as_bytes())?;
             self.update_cache(file_name, folder, text);
@@ -33,8 +32,7 @@ impl FileWriter {
                 .create_new(true)
                 .write(true)
                 .append(true)
-                .open(file_path)
-                .unwrap();
+                .open(file_path)?;
 
             f.write(text.as_bytes())?;
             self.add_to_cache(file_name, folder, text);
@@ -46,7 +44,7 @@ impl FileWriter {
     fn add_to_cache(&self, file_name: String, path: String, text: String) {
         let cache = get_cache();
         let mut cache_lock = cache.lock().unwrap();
-        cache_lock.new_note(file_name.to_string(), path.to_string(), text.to_string());
+        cache_lock.new_note(file_name, path, text);
     }
 
     fn update_cache(&self, file_name: String, path: String, text: String) {

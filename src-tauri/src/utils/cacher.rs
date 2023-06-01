@@ -69,6 +69,14 @@ impl Cache {
         self.notes.as_ref()
     }
 
+    pub fn get_note(&self, file_name: String) -> Option<Note> {
+        let found_note = self.notes.iter().find(|n| n.file_name == file_name);
+        match found_note {
+            Some(note) => Some(note.clone()),
+            None => None,
+        }
+    }
+
     pub fn new_note(&mut self, file_name: String, path: String, text: String) {
         let note = Note::new(file_name, path, text);
         self.notes.push(note);
@@ -84,5 +92,33 @@ impl Cache {
             }
             None => {}
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new_and_initialize_contains_test_file() {
+        let cache = get_cache();
+        let mut cache_lock = cache.lock().unwrap();
+        cache_lock.initialize().unwrap();
+        let notes = cache_lock.get_all();
+        assert!(notes.len() > 0);
+    }
+
+    #[test]
+    fn add_new_note() {
+        let cache = get_cache();
+        let mut cache_lock = cache.lock().unwrap();
+        let first_notes_count = cache_lock.get_all().len();
+        cache_lock.new_note(
+            "test123.txt".to_string(),
+            "random stuff".to_string(),
+            "random text".to_string(),
+        );
+
+        assert_eq!(first_notes_count + 1, cache_lock.get_all().len());
     }
 }

@@ -8,18 +8,16 @@ import Note from "src/models/Note";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  greetingMessage = "";
   filesDir = ""
+  notes: Note[] = []
 
   ngOnInit(): void {
-    // invoke<string>("write_to_file", { text: "this is a test", fileName: "test2.txt" }).then(() => {
-    //   console.log("done")
-    // })
-
-    invoke<string>("fetch_all_notes", {}).then((res: any) => {
-      let notes = this.mapToType(res)
-      console.log(notes)
+    invoke<string>("write_to_file", { text: "lfsdgf;dj", fileName: "new_file.txt" }).then(() => {
+      console.log("done")
+      this.fetchAllNotes()
     })
+
+    this.fetchAllNotes();
 
     invoke<string>("fetch_files_dir", {}).then((filesDir: string) => {
       console.log(filesDir)
@@ -31,19 +29,17 @@ export class AppComponent implements OnInit {
     })
   }
 
-  greet(event: SubmitEvent, name: string): void {
-    event.preventDefault();
-
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    invoke<string>("greet", { name }).then((text) => {
-      this.greetingMessage = text;
-    });
+  fetchAllNotes() {
+    invoke<string>("fetch_all_notes", {}).then((res: any) => {
+      this.notes = this.mapToType(res)
+      console.log(this.notes)
+    })
   }
 
   private mapToType(result: any[]): Note[] {
     let notes: Note[] = []
     result.forEach(res => {
-      notes.push({ fileName: res.file_name, path: res.path })
+      notes.push({ fileName: res.file_name, path: res.path, text: res.text })
     })
 
     return notes

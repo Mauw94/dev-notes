@@ -7,22 +7,12 @@ use crate::{
 };
 
 #[tauri::command]
-pub async fn greet(name: String) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
 pub async fn write_to_file(text: String, file_name: String) {
     let config = Config::default();
     let file_writer = FileWriter::new();
-    match file_writer.write(file_name, config.files_folder, text) {
-        Ok(_) => {
-            println!("{}", "Successfully written to file.");
-        }
-        Err(err) => {
-            eprintln!("{:?}", err);
-        }
-    }
+    file_writer
+        .write(file_name, config.files_folder, text)
+        .unwrap();
 }
 
 #[tauri::command]
@@ -36,13 +26,19 @@ pub async fn fetch_note_content(path: String) -> String {
 }
 
 #[tauri::command]
+pub async fn fetch_note(file_name: String) -> Result<Note, String> {
+    match fetcher::fetch_note(file_name) {
+        Ok(note) => Ok(note),
+        Err(()) => Err("Didn't find note".to_string()),
+    }
+}
+
+#[tauri::command]
 pub async fn fetch_app_dir() -> String {
-    let config = Config::default();
-    config.app_folder
+    Config::default().app_folder
 }
 
 #[tauri::command]
 pub async fn fetch_files_dir() -> String {
-    let config = Config::default();
-    config.files_folder
+    Config::default().files_folder
 }

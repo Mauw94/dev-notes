@@ -1,6 +1,7 @@
 type Note = {
     fileName: String,
-    path: String
+    path: String,
+    text: String,
 }
 
 export default Note

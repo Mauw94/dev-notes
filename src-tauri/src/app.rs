@@ -2,7 +2,8 @@ use std::{fs::create_dir_all, io::Error, path::Path};
 
 use crate::{
     config::{self, Config},
-    utils::writer::{FileWriter}};
+    utils::writer::FileWriter,
+};
 
 pub struct App {
     config: Config,
@@ -29,5 +30,17 @@ impl App {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn setup_app() {
+        let app = App::new(Config::default());
+        let setup_result = app.setup();
+        assert_eq!(setup_result.is_ok(), true);
     }
 }
