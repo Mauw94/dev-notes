@@ -26,7 +26,7 @@ impl Note {
     }
 }
 
-pub fn fetch_all_notes() -> Result<Vec<Note>, Error> {
+pub fn fetch_all_notes_from_cache() -> Result<Vec<Note>, Error> {
     let cfg = Config::default();
     let binding = get_cache();
     let cache = binding.lock().unwrap();
@@ -53,7 +53,7 @@ pub fn fetch_note_content_from_cache(file_name: String) -> String {
     }
 }
 
-pub fn fetch_note(file_name: String) -> Result<Note, ()> {
+pub fn fetch_note_from_cache(file_name: String) -> Result<Note, ()> {
     let cache = get_cache();
     let cache_lock = cache.lock().unwrap();
     let note = cache_lock.get_note(file_name);
@@ -69,7 +69,7 @@ mod tests {
 
     #[test]
     fn fetch_all_notes_returns_ok() {
-        let notes = fetch_all_notes();
+        let notes = fetch_all_notes_from_cache();
         assert!(notes.is_ok());
     }
 

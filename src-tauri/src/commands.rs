@@ -16,8 +16,8 @@ pub async fn write_to_file(text: String, file_name: String) {
 }
 
 #[tauri::command]
-pub async fn fetch_all_notes() -> Vec<Note> {
-    fetcher::fetch_all_notes().unwrap()
+pub async fn fetch_all_notes_from_cache() -> Vec<Note> {
+    fetcher::fetch_all_notes_from_cache().unwrap()
 }
 
 #[tauri::command]
@@ -27,7 +27,7 @@ pub async fn fetch_note_content(path: String) -> String {
 
 #[tauri::command]
 pub async fn fetch_note(file_name: String) -> Result<Note, String> {
-    match fetcher::fetch_note(file_name) {
+    match fetcher::fetch_note_from_cache(file_name) {
         Ok(note) => Ok(note),
         Err(()) => Err("Didn't find note".to_string()),
     }

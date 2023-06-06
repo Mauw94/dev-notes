@@ -26,7 +26,7 @@ async fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             commands::write_to_file,
-            commands::fetch_all_notes,
+            commands::fetch_all_notes_from_cache,
             commands::fetch_note_content,
             commands::fetch_note,
             commands::fetch_app_dir,
