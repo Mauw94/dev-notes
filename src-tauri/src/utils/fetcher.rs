@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::Config;
 
-use super::cacher::{get_cache, Cache};
+use super::cacher::get_cache;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Note {
