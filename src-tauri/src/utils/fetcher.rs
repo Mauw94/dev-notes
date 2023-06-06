@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::Config;
 
-use super::cacher::get_cache;
+use super::cacher::{get_cache, Cache};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Note {
@@ -41,6 +41,16 @@ pub fn fetch_all_notes() -> Result<Vec<Note>, Error> {
 pub fn fetch_note_content(path: String) -> Result<String, Error> {
     let content = fs::read_to_string(path)?;
     Ok(content)
+}
+
+pub fn fetch_note_content_from_cache(file_name: String) -> String {
+    let binding = get_cache();
+    let cache = binding.lock().unwrap();
+    let note = cache.get_note(file_name);
+    match note {
+        Some(n) => n.text,
+        None => String::new(),
+    }
 }
 
 pub fn fetch_note(file_name: String) -> Result<Note, ()> {

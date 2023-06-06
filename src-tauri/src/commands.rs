@@ -42,3 +42,8 @@ pub async fn fetch_app_dir() -> String {
 pub async fn fetch_files_dir() -> String {
     Config::default().files_folder
 }
+
+#[tauri::command]
+pub async fn fetch_note_content_from_cache(file_name: String) -> String {
+    fetcher::fetch_note_content_from_cache(file_name)
+}
