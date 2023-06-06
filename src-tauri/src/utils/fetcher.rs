@@ -54,14 +54,26 @@ pub fn fetch_note_content_from_cache(file_name: String) -> String {
 }
 
 pub fn fetch_note_from_cache(file_name: String) -> Result<Note, ()> {
-    let cache = get_cache();
-    let cache_lock = cache.lock().unwrap();
-    let note = cache_lock.get_note(file_name);
+    let binding = get_cache();
+    let cache = binding.lock().unwrap();
+    let note = cache.get_note(file_name);
     match note {
         Some(n) => Ok(n),
         None => Err(()),
     }
 }
+
+pub fn update_note_in_cache(file_name: String, path: String, text: String) {
+    let cache = get_cache();
+    let mut cache_lock = cache.lock().unwrap();
+    cache_lock.update_cache(file_name, path, text);
+}
+
+// TODO fix
+// fn get_cache_lock<'a>() -> std::sync::MutexGuard<'a, super::cacher::Cache> {
+//     let cache_lock = get_cache().lock().unwrap();
+//     cache_lock
+// }
 
 #[cfg(test)]
 mod tests {

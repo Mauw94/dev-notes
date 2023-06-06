@@ -31,7 +31,8 @@ async fn main() {
             commands::fetch_note,
             commands::fetch_app_dir,
             commands::fetch_files_dir,
-            commands::fetch_note_content_from_cache
+            commands::fetch_note_content_from_cache,
+            commands::update_note_in_cache
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

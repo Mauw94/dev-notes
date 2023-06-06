@@ -34,6 +34,11 @@ pub async fn fetch_note(file_name: String) -> Result<Note, String> {
 }
 
 #[tauri::command]
+pub async fn update_note_in_cache(file_name: String, path: String, text: String) {
+    fetcher::update_note_in_cache(file_name, path, text)
+}
+
+#[tauri::command]
 pub async fn fetch_app_dir() -> String {
     Config::default().app_folder
 }
