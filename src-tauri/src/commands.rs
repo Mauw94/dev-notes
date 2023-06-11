@@ -1,6 +1,7 @@
 use crate::{
     config::Config,
     utils::{
+        auth,
         fetcher::{self, Note},
         writer::FileWriter,
     },
@@ -51,4 +52,9 @@ pub async fn fetch_files_dir() -> String {
 #[tauri::command]
 pub async fn fetch_note_content_from_cache(file_name: String) -> String {
     fetcher::fetch_note_content_from_cache(file_name)
+}
+
+#[tauri::command]
+pub async fn auth_user(name: String, pass: String) -> bool {
+    auth::login(name, pass).unwrap()
 }

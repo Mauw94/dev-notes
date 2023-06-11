@@ -1,19 +1,13 @@
 <div class="container">
   <h1>Dev-Notes</h1>
+
   <div class="row">
-    <a href="https://tauri.app" target="_blank">
-      <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
-    </a>
-    <a href="https://angular.io" target="_blank">
-      <img src="/assets/angular.svg" class="logo angular" alt="Angular logo" />
-    </a>
-  </div>
-  <p>Click on the logos to learn more about the frameworks</p>
-  <div class="row">
-    <div *ngFor="let note of notes">
-      <h3>{{ note.fileName }}</h3>
-      <p>{{ note.text}}</p>
-      <br>
+    <div class="col-md-12">
+      <hr>
+      <div *ngFor="let note of notes">
+        <p class="logo tauri">{{ note.fileName }}</p>
+        <br>
+      </div>
     </div>
   </div>
 </div>

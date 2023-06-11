@@ -2,14 +2,18 @@ use std::io::Error;
 
 use tauri::api::path::home_dir;
 
-pub const APP_FOLDER: &str = "dev-notes";
-pub const NOTES_FOLDER: &str = "notes";
+const APP_FOLDER: &str = "dev-notes";
+const NOTES_FOLDER: &str = "notes";
+const LOGIN_NAME: &str = "shimy";
+const LOGIN_PASS: &str = "123";
 
 pub struct Config {
     pub app_folder: String,
     pub files_folder: String,
     pub test_file_name: String,
     pub test_file_path: String,
+    pub login_name: String,
+    pub login_pass: String,
 }
 
 impl Config {
@@ -19,6 +23,8 @@ impl Config {
             files_folder: Self::files_dir(),
             test_file_name: String::from("test_file.txt"),
             test_file_path: Self::test_file_path(),
+            login_name: LOGIN_NAME.to_string(),
+            login_pass: LOGIN_PASS.to_string()
         }
     }
 
