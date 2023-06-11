@@ -1,6 +1,7 @@
 use std::{
     fs::{self},
     io::Error,
+    time::SystemTime,
 };
 
 use serde::{Deserialize, Serialize};
@@ -14,6 +15,7 @@ pub struct Note {
     pub file_name: String,
     pub path: String,
     pub text: String,
+    pub modified_time: SystemTime,
 }
 
 impl Note {
@@ -22,6 +24,7 @@ impl Note {
             file_name,
             path,
             text,
+            modified_time: SystemTime::now(),
         }
     }
 }

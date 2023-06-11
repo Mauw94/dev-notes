@@ -1,7 +1,8 @@
 type Note = {
-    fileName: String,
-    path: String,
-    text: String,
+    fileName: string,
+    path: string,
+    text: string,
+    creation_time: Date
 }
 
 export default Note

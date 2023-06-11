@@ -5,9 +5,14 @@
     <div class="col-md-12">
       <hr>
       <div *ngFor="let note of notes">
-        <p class="logo tauri">{{ note.fileName }}</p>
+        <p (click)="fetchNoteContent(note.fileName)" class="logo tauri">{{ note.fileName }} {{ note.creation_time }}</p>
         <br>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {{content}}
     </div>
   </div>
 </div>

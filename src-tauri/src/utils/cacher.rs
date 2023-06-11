@@ -47,6 +47,7 @@ impl Cache {
                                     file_name: entry.file_name().to_string_lossy().to_string(),
                                     path: entry.path().to_string_lossy().to_string(),
                                     text: content,
+                                    modified_time: entry.metadata().unwrap().modified().unwrap(),
                                 };
                                 self.notes.push(n);
                             }
