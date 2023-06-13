@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import Note from "src/models/Note";
+import { FETCH_ALL_NOTES_FROM_CACHE, FETCH_NOTE_CONTENT_FROM_CACHE } from "./consts";
 
 @Component({
   selector: "app-root",
@@ -16,25 +17,23 @@ export class AppComponent implements OnInit {
   }
 
   public fetchNoteContent(fileName: string) {
-    invoke<string>("fetch_note_content_from_cache", { fileName: fileName }).then((content: string) => {
+    invoke<string>(FETCH_NOTE_CONTENT_FROM_CACHE, { fileName: fileName }).then((content: string) => {
       this.content = content
     })
   }
 
   private fetchAllNotes() {
-    invoke<string>("fetch_all_notes_from_cache", {}).then((res: any) => {
-      this.notes = this.mapToType(res)
-      console.log(this.notes)
+    invoke<string>(FETCH_ALL_NOTES_FROM_CACHE, {}).then((res: any) => {
+      this.notes = this.mapToNote(res)
     })
   }
 
-  private mapToType(result: any[]): Note[] {
+  private mapToNote(result: any[]): Note[] {
     let notes: Note[] = []
     result.forEach(res => {
-      let d = new Date(0)
-      console.log(res.creation_time)
-      d.setUTCSeconds(res.creation_time.secs_since_epoch)
-      notes.push({ fileName: res.file_name, path: res.path, text: res.text, creation_time: d })
+      let modified_time = new Date(0)
+      modified_time.setUTCSeconds(res.modified_time.secs_since_epoch)
+      notes.push(new Note(res.file_name, res.path, res.text, modified_time))
     })
 
     return notes

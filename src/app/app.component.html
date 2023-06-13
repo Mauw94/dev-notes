@@ -4,10 +4,13 @@
   <div class="row">
     <div class="col-md-12">
       <hr>
-      <div *ngFor="let note of notes">
-        <p (click)="fetchNoteContent(note.fileName)" class="logo tauri">{{ note.fileName }} {{ note.creation_time }}</p>
-        <br>
-      </div>
+      <ul>
+        <li *ngFor="let note of notes" (click)="fetchNoteContent(note.fileName)" class="btn" href="#" role="button">{{
+          note.fileName
+          }}
+          {{ note.getDate() }}
+        </li>
+      </ul>
     </div>
   </div>
   <div class="row">

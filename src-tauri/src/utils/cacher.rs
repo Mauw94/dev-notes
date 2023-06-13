@@ -35,27 +35,30 @@ impl Cache {
 
     pub fn initialize(&mut self) -> Result<(), Error> {
         let config = Config::default();
-        if Path::new(config.files_folder.as_str()).exists() {
-            for entry in fs::read_dir(config.files_folder)? {
-                match entry {
-                    Ok(entry) => {
-                        let path = entry.path();
-                        if let Some(ext) = path.extension() {
-                            if ext.to_string_lossy().ends_with("txt") {
-                                let content = fs::read_to_string(entry.path())?;
-                                let n = Note {
-                                    file_name: entry.file_name().to_string_lossy().to_string(),
-                                    path: entry.path().to_string_lossy().to_string(),
-                                    text: content,
-                                    modified_time: entry.metadata().unwrap().modified().unwrap(),
-                                };
-                                self.notes.push(n);
-                            }
+
+        if !Path::new(config.files_folder.as_str()).exists() {
+            panic!("Config is not correct");
+        }
+
+        for entry in fs::read_dir(config.files_folder)? {
+            match entry {
+                Ok(entry) => {
+                    let path = entry.path();
+                    if let Some(ext) = path.extension() {
+                        if ext.to_string_lossy().ends_with("txt") {
+                            let content = fs::read_to_string(entry.path())?;
+                            let n = Note {
+                                file_name: entry.file_name().to_string_lossy().to_string(),
+                                path: entry.path().to_string_lossy().to_string(),
+                                text: content,
+                                modified_time: entry.metadata().unwrap().modified().unwrap(),
+                            };
+                            self.notes.push(n);
                         }
                     }
-                    Err(_) => {
-                        continue;
-                    }
+                }
+                Err(_) => {
+                    continue;
                 }
             }
         }

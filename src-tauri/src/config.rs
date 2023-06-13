@@ -24,7 +24,7 @@ impl Config {
             test_file_name: String::from("test_file.txt"),
             test_file_path: Self::test_file_path(),
             login_name: LOGIN_NAME.to_string(),
-            login_pass: LOGIN_PASS.to_string()
+            login_pass: LOGIN_PASS.to_string(),
         }
     }
 
@@ -38,7 +38,7 @@ impl Config {
         base_dir + NOTES_FOLDER + "\\"
     }
 
-    pub(crate) fn test_file_path() -> String {
+    pub fn test_file_path() -> String {
         Self::files_dir() + "test_file.txt"
     }
 }
