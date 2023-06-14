@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import Note from "src/models/Note";
-import { FETCH_ALL_NOTES_FROM_CACHE, FETCH_NOTE_CONTENT_FROM_CACHE } from "./consts";
+import { FETCH_ALL_NOTES_FROM_CACHE, FETCH_NOTE_CONTENT_FROM_CACHE, UPDATE_NOTE_IN_CACHE, WRITE_TO_FILE } from "./consts";
 
 @Component({
   selector: "app-root",
@@ -10,16 +10,58 @@ import { FETCH_ALL_NOTES_FROM_CACHE, FETCH_NOTE_CONTENT_FROM_CACHE } from "./con
 })
 export class AppComponent implements OnInit {
   notes: Note[] = []
+  selectedNote: string = ""
   content: string = ""
+  showingContent: boolean = false
+  creating: boolean = false
+  editing: boolean = false
+  fileName: string = ""
+  fileContent: string = ""
 
   ngOnInit(): void {
-    this.fetchAllNotes();
+    this.fetchAllNotes()
   }
 
-  public fetchNoteContent(fileName: string) {
+  fetchNoteContent(fileName: string) {
     invoke<string>(FETCH_NOTE_CONTENT_FROM_CACHE, { fileName: fileName }).then((content: string) => {
+      this.selectedNote = fileName
+      this.showingContent = true
       this.content = content
     })
+  }
+
+  save(): void {
+    if (this.creating) {
+      let note = this.notes.find(n => n.fileName === this.selectedNote)
+      invoke<string>(UPDATE_NOTE_IN_CACHE, { fileName: this.fileName, path: note?.path!, text: this.fileContent }).then(() => {
+        this.fetchAllNotes()
+        this.creating = false
+        this.editing = false
+        this.showingContent = false
+      })
+      return
+    }
+
+    if (this.editing) {
+      invoke<string>(WRITE_TO_FILE, { text: this.fileContent, fileName: this.fileName }).then(() => {
+        this.fetchAllNotes()
+        this.fetchNoteContent(this.fileName)
+        this.fileContent = ""
+        this.fileName = ""
+        this.creating = false
+        this.editing = false
+      })
+      return
+    }
+  }
+
+  edit(): void {
+    this.editing = true
+    if (this.selectedNote !== "") {
+      let note = this.notes.find(n => n.fileName === this.selectedNote)
+      this.fileContent = note?.text!
+      this.fileName = note?.fileName!
+    }
   }
 
   private fetchAllNotes() {

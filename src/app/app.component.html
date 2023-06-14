@@ -2,6 +2,9 @@
   <h1>Dev-Notes</h1>
 
   <div class="row">
+    <button class="btn btn-secondary" (click)="creating = !creating">Create new</button>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <hr>
       <ul>
@@ -13,9 +16,22 @@
       </ul>
     </div>
   </div>
-  <div class="row">
+  <div *ngIf="showingContent" class="row">
     <div class="col-md-12">
       {{content}}
     </div>
+    <div class="col-md-12">
+      <button class="btn btn-secondary" (click)="edit()">Edit</button>
+    </div>
+  </div>
+
+  <div *ngIf="creating || editing" class="col-md-12">
+    <div class="form-control">
+      <input type="text" [(ngModel)]="fileName">
+    </div>
+    <div class="form-control">
+      <textarea [(ngModel)]="fileContent"></textarea>
+    </div>
+    <button class="btn btn-primary" (click)="save()">Save</button>
   </div>
 </div>
