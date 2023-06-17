@@ -8,7 +8,7 @@ use std::{
     time::Duration,
 };
 
-use super::fetcher::Note;
+use super::{fetcher::Note, writer::FileWriter};
 
 pub struct Cache {
     pub notes: Vec<Note>,
@@ -81,9 +81,16 @@ impl Cache {
         }
     }
 
-    pub fn new_note(&mut self, file_name: String, path: String, text: String) {
-        let note = Note::new(file_name, path, text);
-        self.notes.push(note);
+    pub fn new_note(&mut self, file_name: String, path: String, text: String) -> Result<(), Error> {
+        let file_writer = FileWriter::new();
+        match file_writer.write(file_name.as_str(), &path, &text) {
+            Ok(()) => {
+                let note = Note::new(&file_name, &path, &text);
+                self.notes.push(note);
+            }
+            Err(err) => eprintln!("{}", err),
+        }
+        Ok(())
     }
 
     pub fn update_cache(&mut self, file_name: String, path: String, text: String) {
@@ -117,11 +124,14 @@ mod tests {
         let cache = get_cache();
         let mut cache_lock = cache.lock().unwrap();
         let first_notes_count = cache_lock.get_all().len();
-        cache_lock.new_note(
-            "test123.txt".to_string(),
-            "random stuff".to_string(),
-            "random text".to_string(),
-        );
+        match cache_lock.new_note(
+            String::from("test123.txt"),
+            String::from("random stuff"),
+            String::from("random text"),
+        ) {
+            Ok(()) => {}
+            Err(err) => eprint!("{}", err),
+        }
 
         assert_eq!(first_notes_count + 1, cache_lock.get_all().len());
     }

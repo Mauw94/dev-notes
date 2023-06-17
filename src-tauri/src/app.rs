@@ -19,9 +19,9 @@ impl App {
         if !Path::new(&config::Config::test_file_path()).exists() {
             let file_writer = FileWriter::new();
             match file_writer.write(
-                String::from("test_file.txt"),
-                self.config.files_folder.to_owned(),
-                String::from("test_file_123"),
+                &String::from("test_file.txt"),
+                &self.config.files_folder,
+                &String::from("test_file_123"),
             ) {
                 Ok(()) => {}
                 Err(err) => eprintln!("{}", err),

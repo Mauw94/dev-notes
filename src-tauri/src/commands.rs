@@ -12,8 +12,13 @@ pub async fn write_to_file(text: String, file_name: String) {
     let config = Config::default();
     let file_writer = FileWriter::new();
     file_writer
-        .write(file_name, config.files_folder, text)
+        .write(&file_name, &config.files_folder, &text)
         .unwrap();
+}
+
+#[tauri::command]
+pub async fn new_note(file_name: String, path: String, text: String) {
+    fetcher::new_note(file_name, path, text)
 }
 
 #[tauri::command]

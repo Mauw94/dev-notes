@@ -19,13 +19,22 @@ pub struct Note {
 }
 
 impl Note {
-    pub fn new(file_name: String, path: String, text: String) -> Self {
+    pub fn new(file_name: &str, path: &str, text: &str) -> Self {
         Self {
-            file_name,
-            path,
-            text,
+            file_name: file_name.to_string(),
+            path: path.to_string(),
+            text: text.to_string(),
             modified_time: SystemTime::now(),
         }
+    }
+}
+
+pub fn new_note(file_name: String, path: String, text: String) {
+    let binding = get_cache();
+    let mut cache = binding.lock().unwrap();
+    match cache.new_note(file_name, path, text) {
+        Ok(()) => {}
+        Err(err) => eprintln!("{}", err),
     }
 }
 
