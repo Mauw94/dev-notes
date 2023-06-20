@@ -1,1 +1,6 @@
-+ update creation_time values when editing a file
++  adding new file opens modal to enter the note text
++ mark notes as done
++ edit (opens modal)
++ delete
++ setup todo date
+
