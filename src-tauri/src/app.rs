@@ -15,13 +15,40 @@ impl App {
     }
 
     pub fn setup(&self) -> Result<(), Error> {
+        self.setup_files_dir()?;
+        self.setup_meta_files_dir()?;
+        Ok(())
+    }
+
+    fn setup_files_dir(&self) -> Result<(), Error> {
         create_dir_all(self.config.files_folder.clone())?;
+
+        // write a test file to the folder, if it doensn't yet exist
         if !Path::new(&config::Config::test_file_path()).exists() {
             let file_writer = FileWriter::new();
             match file_writer.write(
-                &String::from("test_file.txt"),
+                &self.config.test_file_name,
                 &self.config.files_folder,
-                &String::from("test_file_123"),
+                "test content 123",
+            ) {
+                Ok(()) => {}
+                Err(err) => eprintln!("{}", err),
+            }
+        }
+        Ok(())
+    }
+ 
+    fn setup_meta_files_dir(&self) -> Result<(), Error> {
+        create_dir_all(self.config.note_meta_data_folder.clone())?;
+
+        // write a test file to the folder, if it doensn't yet exist
+        if !Path::new(&config::Config::test_meta_file_path()).exists() {
+            let file_writer = FileWriter::new();
+            match file_writer.write(
+                &self.config.test_file_name,
+                &self.config.note_meta_data_folder,
+                // TODO: get info from the file
+                "has_due_data: false\nis_active: true\nis_completed: false",
             ) {
                 Ok(()) => {}
                 Err(err) => eprintln!("{}", err),

@@ -52,6 +52,10 @@ impl Cache {
                                 path: entry.path().to_string_lossy().to_string(),
                                 text: content,
                                 modified_time: entry.metadata().unwrap().modified().unwrap(),
+                                // TODO fetch from meta file
+                                has_due_date: false,
+                                is_active: true,
+                                is_completed: false,
                             };
                             self.notes.push(n);
                         }

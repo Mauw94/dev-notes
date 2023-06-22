@@ -3,4 +3,5 @@
 + edit (opens modal)
 + delete
 + setup todo date
++ setup config for each note
 

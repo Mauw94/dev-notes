@@ -16,6 +16,9 @@ pub struct Note {
     pub path: String,
     pub text: String,
     pub modified_time: SystemTime,
+    pub has_due_date: bool,
+    pub is_active: bool,
+    pub is_completed: bool,
 }
 
 impl Note {
@@ -25,6 +28,9 @@ impl Note {
             path: path.to_string(),
             text: text.to_string(),
             modified_time: SystemTime::now(),
+            has_due_date: false,
+            is_active: true,
+            is_completed: false
         }
     }
 }
