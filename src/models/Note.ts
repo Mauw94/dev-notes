@@ -16,9 +16,8 @@ export default class Note {
             return "??? {modified_time} is unkown"
         }
 
-        return this.modified_time.getDate() + ""
+        return this.modified_time.getDay() + "/" + this.modified_time.getMonth() + "/" + this.modified_time.getFullYear() + " "
             + this.modified_time.getHours() + ":"
-            + this.modified_time.getMinutes() + ":"
-            + this.modified_time.getSeconds() + ":"
+            + this.modified_time.getMinutes()
     }
 }
